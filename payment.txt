@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+            text-align: center;
+            width: 100%;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 0.5em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        main {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .travel-photo {
+            flex: 1;
+            text-align: center;
+        }
+        .travel-photo img {
+            max-width: 80%;
+            height: 900;
+        }
+        #paymentForm {
+            flex: 1;
+            text-align: left;
+            max-width: 400px; 
+        }
+        #paymentForm label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        #paymentForm select,
+        #paymentForm input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        #paymentForm button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+        }
+        .payment-logos {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 20px;
+        }
+        .payment-logo {
+            width: 80px; 
+            height: 80px; 
+    </style>
+</head>
+<body>
+    <include src="header.html"></include>
+
+    <main>
+        <div class="travel-photo">
+            <img src="tra.jpg" alt="Travel Photo">
+        </div>
+
+        <form id="paymentForm" onsubmit="return processPayment()">
+            <h2>Payment Details</h2>
+            <p>Please enter your payment details to complete the booking for:</p>
+            <p id="destination"></p>
+
+            <label for="paymentMethod">Select Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod">
+                <option value="netbanking">Netbanking</option>
+                <option value="upi">UPI</option>
+                <option value="paytm">Paytm</option>
+                <option value="phonepe">PhonePe</option>
+                <option value="gpay">Google Pay</option>
+            </select>
+
+            <div id="netbankingFields" style="display: none;">
+                <label for="netbankingDetails">Netbanking Details:</label>
+                <input type="text" id="netbankingDetails" name="netbankingDetails">
+            </div>
+
+            <div id="upiFields" style="display: none;">
+                <label for="upiId">UPI ID:</label>
+                <input type="text" id="upiId" name="upiId">
+            </div>
+
+            <div id="paytmFields" style="display: none;">
+                <label for="paytmNumber">Paytm Number:</label>
+                <input type="text" id="paytmNumber" name="paytmNumber">
+            </div>
+
+            <div id="phonepeFields" style="display: none;">
+                <label for="phonepeNumber">PhonePe Number:</label>
+                <input type="text" id="phonepeNumber" name="phonepeNumber">
+            </div>
+
+            <div id="gpayFields" style="display: none;">
+                <label for="gpayNumber">Google Pay Number:</label>
+                <input type="text" id="gpayNumber" name="gpayNumber">
+            </div>
+
+            <button type="submit">Proceed to Payment</button>
+        </form>
+
+        <div class="payment-logos">
+            <img src="phonepe.png" alt="PhonePe" class="payment-logo">
+            <img src="gpay.jpg" alt="Google Pay" class="payment-logo">
+            <img src="upi.png" alt="UPI" class="payment-logo">
+            <img src="net.png" alt="Netbanking" class="payment-logo">
+        </div>
+    </main>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const destination = urlParams.get('destination');
+        
+        
+        document.getElementById('destination').innerText = `Destination: ${destination}`;
+
+        
+        function processPayment() {
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            
+            switch (paymentMethod) {
+                case 'netbanking':
+                    const netbankingDetails = document.getElementById('netbankingDetails').value;
+                    alert(`Processing Netbanking payment with details: ${netbankingDetails}`);
+                    break;
+                case 'upi':
+                    const upiId = document.getElementById('upiId').value;
+                    alert(`Processing UPI payment with ID: ${upiId}`);
+                    break;
+                case 'paytm':
+                    const paytmNumber = document.getElementById('paytmNumber').value;
+                    alert(`Processing Paytm payment with number: ${paytmNumber}`);
+                    break;
+                case 'phonepe':
+                    const phonepeNumber = document.getElementById('phonepeNumber').value;
+                    alert(`Processing PhonePe payment with number: ${phonepeNumber}`);
+                    break;
+                case 'gpay':
+                    const gpayNumber = document.getElementById('gpayNumber').value;
+                    alert(`Processing Google Pay payment with number: ${gpayNumber}`);
+                    break;
+                default:
+                    alert('Invalid payment method selected');
+                    break;
+            }
+
+            return false; 
+        }
+
+        
+        function showPaymentFields() {
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            
+            document.getElementById('netbankingFields').style.display = 'none';
+            document.getElementById('upiFields').style.display = 'none';
+            document.getElementById('paytmFields').style.display = 'none';
+            document.getElementById('phonepeFields').style.display = 'none';
+            document.getElementById('gpayFields').style.display = 'none';
+
+            
+            switch (paymentMethod) {
+                case 'netbanking':
+                    document.getElementById('netbankingFields').style.display = 'block';
+                    break;
+                case 'upi':
+                    document.getElementById('upiFields').style.display = 'block';
+                    break;
+                case 'paytm':
+                    document.getElementById('paytmFields').style.display = 'block';
+                    break;
+                case 'phonepe':
+                    document.getElementById('phonepeFields').style.display = 'block';
+                    break;
+                case 'gpay':
+                    document.getElementById('gpayFields').style.display = 'block';
+                    break;
+                default:
+                    break;
+            }
+        }
+        document.getElementById('paymentMethod').addEventListener('change', showPaymentFields); 
+        showPaymentFields();
+    </script>
+</body>
+</html>
